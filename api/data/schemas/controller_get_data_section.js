@@ -1,24 +1,33 @@
 'use strict';
-const database = require('../../../tools/database');
+const async = require('async');
 const message = require('../../../tools/message');
-//const util = require('../../../tools/util');
+const util = require('../../../tools/util');
 
-
-const action = (reply) => {
-  let connection = database.initiate();
+const action = (actionPayload) => {
+  let reply = actionPayload.reply;
   let query = 'SELECT * FROM Section';
 
-  connection.query(query, (error, results) => {
-    if (error) {
-      database.terminate(connection);
-      console.error(error);
-      message.ErrorDBQueryFailed(reply);
+  async.waterfall([
+    (callback) => {
+      util.executeDBWithCallback(query,callback);
+    }
+  ], function (err, results) {
+    if (!err){
+      let arrObj = {
+        arr : results,
+        totalRowCount : results.length
+      };
+      message.MsgListArray(arrObj, null, reply);
     }
     else {
-      message.MsgListArray(results,results.length, null, null, null, null, reply);
+      switch (err.code) {
+      default:
+        message.ErrorBadImplementation('system_db_operation_failed',reply);
+      }
     }
-  }); 
-  database.terminate(connection);
+  });
+
+
 };
 
 module.exports = {

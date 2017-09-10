@@ -1,6 +1,8 @@
 'use strict';
-const validator = require('../schemas/validator_get_data_section');
+const validator = require('../schemas/validator_data');
 const controller = require('../schemas/controller_get_data_section');
+const decodeJWT = require('../../../tools/decodeJWT');
+
 
 module.exports = {
   method: 'GET',
@@ -9,11 +11,10 @@ module.exports = {
     description: 'List section',
     tags: ['section'],
     response: {
-      schema: validator.response
-    },
-    auth: false
+      schema: validator.responseList
+    }
   },
   handler: (request, reply) => {
-    controller.action(reply);
+    decodeJWT.decode(request, false, null, controller, reply);
   }
 };
