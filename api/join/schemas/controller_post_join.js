@@ -24,7 +24,7 @@ const action = (data, reply) => {
           // if target fudaer already created and unverified
           let url = createVerifiedURL(emailCheck[0].id,emailCheck[0].email);
           send_email(emailCheck[0].email, url, reply);
-          callback({code:400,msg:'resent_verified_email'});
+          callback({code:900,msg:'resent_verified_email'});
         }
         else {
           callback({code:400,msg:'email_in_used'});
