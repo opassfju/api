@@ -1,0 +1,25 @@
+{
+  "commons":{
+    "serverURL":"http://localhost:9876"
+  },
+  "db":{
+    "host": "localhost",
+    "user": "me",
+    "password": "secret",
+    "database": "my_db",
+    "pageLimit": "LIMIT 20"
+  },
+  "privateKeys":{
+    "emailVerification": "",
+    "login" : "",
+    "resetPassword" : ""
+  },
+  "email": {
+    "maxEmailCount": 5,
+    "sender": {
+      "name": "xxx@watchout.tw",
+      "password": "xxx",
+      "from": " \"Fred Foo 👻\" <@watchout.tw>"
+    }
+  }
+}
