@@ -11,31 +11,40 @@ const payloadKeys = [
 
 const GetSingleString = () => {
   return (`
-    SELECT
-      F.email,
-      D.name department,
-      N.name nickname,
-      S.name section,
-      SD.name sec_major,
-      SM.name miner,
-      P.name program 
-    FROM 
-      Fudaer  F,
-      Nickname N,
-      Department D,
-      Department SD,
-      Department SM,
-      Section S,
-      Program  P
-
-    WHERE 
-      N.id = F.nickname_id AND
-      D.id = F.department_id AND
-      SD.id = F.sec_major_id AND
-      SM.id = F.miner_id AND
-      S.id = F.section_id AND
-      P.id = F.program_id AND
-      F.id = ?
+  SELECT
+    F.email,
+    N.name nickname,
+    (
+      SELECT D.name
+      FROM Department D
+      WHERE D.id = F.department_id
+    ) department,
+    (
+      SELECT S.name
+      FROM Section S
+      WHERE S.id = F.section_id
+    ) section,
+    (
+      SELECT SD.name
+      FROM Department SD
+      WHERE SD.id = F.sec_major_id
+    ) sec_major,
+    (
+      SELECT SM.name
+      FROM Department SM
+      WHERE SM.id = F.miner_id
+    ) miner,
+    (
+      SELECT P.name
+      FROM  Program  P
+      WHERE P.id = F.program_id
+    ) program
+  FROM 
+    Fudaer F,
+    Nickname N
+  WHERE 
+    N.id = F.nickname_id AND
+    F.id = ?
   `);
 };
 
