@@ -2,6 +2,7 @@
 const async = require('async');
 const message = require('../../../tools/message');
 const util = require('../../../tools/util');
+const query = require('./query_comment');
 
 const action = (actionPayload) => {
   let params = actionPayload.request.query;
@@ -16,9 +17,8 @@ const action = (actionPayload) => {
   
   async.waterfall([
     (callback) => {
-      let query = `SELECT * FROM Comments ${whereStr} ORDER BY create_date DESC`;
-      console.log(query);
-      util.executeDBWithCallback(query,callback);
+      console.log(query.GetList(whereStr,pageObj.pageStr));
+      util.executeDBWithCallback(query.GetList(whereStr,pageObj.pageStr),callback);
     },
     (comment_res,callback) => {
       
