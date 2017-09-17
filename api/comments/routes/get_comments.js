@@ -1,6 +1,7 @@
 'use strict';
 const validator = require('../schemas/validator_get_comments');
 const controller = require('../schemas/controller_get_comments');
+const decodeJWT = require('../../../tools/decodeJWT');
 
 module.exports = {
   method: 'GET',
@@ -9,11 +10,10 @@ module.exports = {
     description: 'List all comments',
     tags: ['comment'],
     response: {
-      schema: validator.response
-    },
-    auth: false
+      schema: validator.responseList
+    }
   },
   handler: (request, reply) => {
-    controller.action(reply);
+    decodeJWT.decode(request, false, null, controller, reply);
   }
 };
